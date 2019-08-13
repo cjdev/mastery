@@ -1,0 +1,113 @@
+
+======== Soft Attributes =======
+Leadership
+ - at teaching
+ - at being an example for others
+ - at building trust with others
+ - at being a valued resource for others
+ - at knowing when to ask others for help and advice
+ - at setting the right tone
+ - at maintaining high personal standards
+ - at raising awareness in others
+ - at demonstrating leadership within the community outside of the company (open source, blogs, talks, meetups, etc)
+
+Owning the Product Domain
+ - at understanding the business model
+ - at improving the product
+ - at supporting the product owner
+ - at being aware of what is going on in the company
+ - at being aware of what is going on with the product
+ - at being aware of what other teams are working on
+ - at taking an interest in some aspect of our product and learning everything there is to know about it
+ - at caring about the direction their project is going
+
+Initiative
+ - at being curious
+ - at knowing there is more to learn
+ - at asking “why”
+ - at taking care of problems without being told
+ - at asking questions when things are unclear
+ - is continually educating themselves, training & learning
+
+Maturity
+ - at thinking long term
+ - at making the right decisions over the easy or fun decisions
+ - at focusing on the customer’s needs & wants
+ - at choosing simple solutions
+
+Agile Processes
+ - at using the DSU to raise issues in a timely manner
+ - at providing constructive, timely and honest feedback in retrospectives
+ - at understanding the purpose of all the agile ceremonies/meetings
+ - at keeping the agile meetings/mechanisms on track
+ - at involving the product owner at just the right times
+
+Presence in the Moment
+ - at showing up at all squad meetings
+ - at showing up at all chapter meetings
+ - at paying attention in meetings
+ - at coordinating time-off with co-workers
+ - at coming prepared to discuss the topic at hand
+
+Chapter Technology
+ - at staying up to date with new and emerging technologies related to the chapter
+ - at offering solutions when problems arise with chapter-related concerns
+ - at actively defining the goals/tech/practices within the chapter
+ - at actively working to move the department towards the goals/tech/practices we've agreed on in the chapter
+
+Chapter Representation
+ - at assisting squads with their chapter's technologies
+ - at being a resource for their squad their chapter's technologies
+ - at representing their squad in the chapter
+ - at seizing opportunities to take innovation from the squad level to the chapter as a whole
+ - at seizing opportunities within chapters to advance the squad's mission
+
+======== General Technical Attributes =======
+
+Language Proficiency
+ - java
+ - scala
+ - clojure
+ - javascript
+ - haskell
+ - SQL
+
+Tooling Proficiency
+ - at working in the IDE
+ - at terminal-based editing
+ - at working from the cli in general
+ - at working with source control systems (e.g. git)
+ - at working with build systems
+
+
+Code/Design/Architecture
+ - at applying functional programming techniques/patterns
+ - at applying object oriented programming techniques/patterns
+ - at understanding CPU/Network/Disk performance characteristics
+ - at understanding & designing system architectures
+ - at assigning responsibilities to systems/classes/functions appropriately
+ - at refactoring existing code
+ - at identifying/using patterns
+ - at writing self-documenting code
+
+XP Practices
+ - at TDD
+ - at pair-programming
+ - at applying CI/CD
+
+======== Chapter-Specific Attributes =======
+
+Understands our data technologies
+ - Foo
+
+Understands our API technologies
+ - Bar
+
+Understands our front-end technologies
+ - Baz
+
+Understands our secure coding & privacy technologies
+ - Qux
+
+Understands and applies our operations technologies and standards
+ - Stuff

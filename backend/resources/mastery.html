@@ -1,0 +1,551 @@
+<html>
+    <head>
+        <title>Path to Mastery</title>
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    </head>
+
+<script>
+var data;
+
+(function(){
+    var request = new XMLHttpRequest();
+    request.open('GET', '/api/template', false);  // `false` makes the request synchronous
+    request.send();
+
+    if (request.status === 200) {
+      data = request.responseText;
+    }else{
+        alert("Error fetching template!");
+    }
+
+})();
+
+</script>
+
+
+<style>
+
+    body, button {
+        font-family: "Open Sans", sans-serif;
+    }
+    h3 {
+        font-style: italic;
+        text-align: left;
+        padding: 0px;
+        margin-bottom: 1px;
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+    table {
+        border: 0px solid black;
+        border-collapse: collapse;
+        width:100%;
+    }
+    hr {
+       margin-top:20px;
+       height: 1px;
+       border-width: 0;
+       background-color: #9e9e9e;
+       color: #9e9e9e;
+    }
+    tr:nth-child(odd) {
+        background: rgba(33,150,243,.05)
+    }
+    tr:nth-child(even),
+    tr.head{
+        background: #FFF
+    }
+    td, th {
+        padding: 5px 8px;
+        vertical-align: middle;
+    }
+    td {
+        text-align:right;
+    }
+    th {
+        width:60px;
+        color: #9e9e9e;
+        font-style: italic;
+        text-transform: capitalize;
+    }
+    .wrapper {
+        margin: 0 auto;
+        max-width: 980px;
+        margin-top:40px;
+    }
+    .blurb {
+        text-align: justify;
+    }
+    blockquote {
+        font-style:italic;
+    }
+    .section-header {
+        background:#444;
+        color:white;
+        padding:5px;
+        font-size:20pt;
+        margin-top:20px;
+    }
+    .path-segment {
+        width:500px;
+        min-width:500px;
+        max-width:500px;
+        margin:0;
+        padding:0;
+        text-align:center;
+    }
+
+    .segment-label {
+        border-right: 1px solid grey;
+    }
+
+    .comments {
+        width:100%;
+        height: 10em;
+        margin-top: 5px;
+        border: 1px solid #999;
+        display:none;
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    tr.comment-row {
+        background-color: transparent;
+    }
+    tr.comment-row td {
+        text-align:right;
+        vertical-align:top;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgba(76, 175, 80, 1);
+    }
+
+    .idk {
+        width:8em;
+        text-align:center;
+    }
+
+    .description {
+        margin-left:10px;
+        width:300px;
+        padding-right: 10px;
+    }
+    .green {
+        background: rgba(76, 175, 80, 1);
+        height:100%;
+        margin:0px;
+        padding:0px;
+    }
+    .hidden-green {
+        display:none;
+    }
+    .path-segment-label {
+        text-align: center;
+        border-left: 1px solid #9e9e9e;
+        padding-left: 2px;
+    }
+
+    .submit-button-band {
+        margin-top:5em;
+        text-align:right;
+        margin-bottom:30px
+    }
+
+    .submit-button-band input, .submit-button-band button {
+        font-size:16px;
+        margin:10px 0;
+        padding: 11px 16px;
+    }
+
+    .submit-button {
+        margin-bottom:5em;
+        padding: 11px 16px;
+        font-size: 14px;
+    }
+    #subject-band {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width:100%;
+        text-align:center;
+    }
+    #subject-content {
+        text-align:right;
+        background:#444;
+        color:white;
+        width: 970px;
+        padding:5px;
+        display:inline-block;
+    }
+
+    .progress {
+        float: left;
+    }
+</style>
+
+<div class="wrapper">
+
+<h1>The Path to Mastery</h1>
+
+<div class="blurb">
+    <blockquote>"What would it look like if we re-oriented all aspects of the lifecycle of interviewing, onboarding, training, reviews and career development around a unified concept of becoming a practicing master of code craft?"</blockquote>
+    <p>This is the question that drove the creation of this "path to mastery" chart; a clear breakdown of all the
+        aspects of mastery that we're seeking to cultivate, and a means of charting our progress toward that end.</p>
+    <p>You'll notice that many (most?) of the aspects on this chart are "soft" skills.  This is because, while the ability to code an algorithm is necessary, mastery goes far beyond this into the realm of teamwork.  How one works with others is even more impactful than writing good code.</p>
+    <p>Our hope is that, starting with interviewing and proceeding throughout your career, this chart will be a clear and useful guide as we seek to grow you into the best you can possibly be.</p>
+</div>
+
+<div id="subject-band"><div id="subject-content"></div></div>
+<div id="content">
+</div>
+<div class="submit-button-band">
+   <button class="submit-button">Submit Feedback</button>
+</div>
+
+</div>
+<script>
+function each(list, fn){
+    for(var x=0;x<list.length;x++){
+        fn(list[x]);
+    }
+}
+function filter(list, predicate){
+    var results = [];
+
+    each(list, function(item){
+        if(predicate(item)){
+            results.push(item);
+        }
+    });
+    return results;
+}
+function create(html){
+    var div = document.createElement('template');
+    div.innerHTML = html;
+    return div.content.firstChild;
+}
+
+function parseQuery(){
+  var params = {};
+  each(document.location.search.replace("?", "").split("&"), function(pair){
+      var parts = pair.split("=")
+      var name, value;
+      if(parts.length>0){
+          name = parts[0];
+          if(parts.length>1){
+              value = parts[1];
+          }
+          params[name] = value
+      }
+  });
+  return params
+}
+
+function get(url, fn){
+    var request = new XMLHttpRequest();
+    request.open("get", url, true);
+    request.onload = function () {
+          fn(request.responseText)
+    };
+    request.send();
+}
+</script>
+<script>
+
+
+  var contentDiv = document.querySelector("#content");
+
+  var defaultPathLabels = ["Exposed", "Apprentice", "Practitioner", "Master"];
+
+  function isNotEmpty(line){return line.trim().length>0;}
+  var lines = filter(data.split("\n"), isNotEmpty)
+
+  var section;
+  var pathLabels = defaultPathLabels;
+  var feedback = {};
+  var meters = {};
+  var commentAreas = {};
+  var comments = {};
+
+  function createMeter(name, meter, idkCheckbox){
+      var isDragging = false;
+
+      var initialValue = feedback[name];
+
+      function setValue(value){
+          if(value === "unknown"){
+              X = idkCheckbox;
+              idkCheckbox.checked = true;
+          }else{
+
+              var max = meter.clientWidth;
+              var segmentSize = max / defaultPathLabels.length
+
+              var parts = value.split("-");
+              var segment = parts[0];
+              var progress = parts[1];
+              var segmentNum = defaultPathLabels.indexOf(segment);
+              var initialWidth = (segmentNum * segmentSize)  + ((progress/100)*segmentSize)
+              meter.querySelector(".green").setAttribute("style", "width:" + initialWidth)
+          }
+
+          storeCurrentValue();
+      }
+
+      if(initialValue){
+          setValue(initialValue)
+      }
+
+      meters[name] = {setValue:setValue}
+
+      function calcMax(){
+          return meter.clientWidth;
+      }
+
+      function setPosition(e){
+          var leftSideOfBar = meter.getBoundingClientRect().left
+          var mousePositionInDiv = e.pageX - leftSideOfBar;
+
+          var max = calcMax();
+
+          var newPosition;
+          if(mousePositionInDiv > max) newPosition = max;
+          else if(mousePositionInDiv < 0) newPosition = 0;
+          else newPosition = mousePositionInDiv;
+
+          meter.querySelector(".green").setAttribute("style", "width:" + newPosition)
+
+
+          storeCurrentValue();
+      }
+
+      function storeCurrentValue(){
+          feedback[name] = getValue();
+      }
+
+      idkCheckbox.onchange = function(){
+          var greenBar = meter.querySelector(".green");
+          var className = "hidden-green";
+          if(idkCheckbox.checked){
+              greenBar.classList.add(className)
+          }else{
+              greenBar.classList.remove(className)
+          }
+          storeCurrentValue();
+      }
+
+
+      function getValue(){
+          if(idkCheckbox.checked){
+              return "unknown";
+          }else{
+              var max = calcMax();
+              var segmentSize = max / defaultPathLabels.length
+              var newPosition = meter.querySelector(".green").offsetWidth
+              var segmentNum = Math.floor(newPosition/segmentSize)
+              var segmentProgress = Math.floor(((newPosition % segmentSize)/segmentSize)*100)
+              var segment;
+              if(segmentNum == defaultPathLabels.length && segmentProgress == 0 ){
+                  segment = defaultPathLabels[defaultPathLabels.length-1];
+                  segmentProgress = 100;
+              }else{
+                  segment = defaultPathLabels[segmentNum];
+              }
+              return segment + "-" + segmentProgress;
+          }
+      }
+
+      var body = document.querySelector("body");
+      meter.addEventListener("mousedown", function(e){
+          isDragging = true;
+          setPosition(e);
+          e.preventDefault();
+      })
+      body.addEventListener("mouseup", function(e){
+          if(isDragging){
+            isDragging = false;
+            setPosition(e);
+            e.preventDefault();
+          }
+      });
+      body.addEventListener("mousemove", function(e){
+          if(isDragging){
+              setPosition(e)
+          }
+      });
+  }
+
+
+
+  each(lines, function(line){
+      var trimmed = line.trim()
+      if(trimmed.startsWith("-")){
+          var text = trimmed.replace('-', '');
+          var row = create('<tr><td class="description">' + text + '</td><td class="path-segment" colspan="' + pathLabels.length + '"><div class="green" style="width:0px">&nbsp;</div></td><td class="idk"><input type="checkbox"/></td></tr>');
+          section.querySelector("tbody").insertBefore(row, section.querySelector(".comment-row"));
+
+          var meter = row.querySelector(".path-segment");
+          var idkCheckbox = row.querySelector(".idk input");
+
+          createMeter(text, meter, idkCheckbox);
+
+      }else if(trimmed.indexOf("=")==0){
+          var columnsPattern = /.*(\(.*\)).*/g
+          var text = trimmed.replace(/=/g, "").replace(/\(.*\)/g, "");
+
+          var matches = columnsPattern.exec(trimmed);
+          if(matches && matches.length > 1){
+            var csv = matches[1].substr(1, matches[1].length-2)
+            pathLabels = csv.split(",")
+          }else{
+              pathLabels = defaultPathLabels;
+          }
+
+          section = undefined;
+          contentDiv.appendChild(create('<div class="section-header">' + text + '</div˘'));
+      }else{
+          contentDiv.appendChild(create("<h3>" + trimmed + "</h3>"))
+          section = create("<table><tr class='head'><th></th></tr></table>");
+
+          each(pathLabels, function(label){
+              section.querySelector("tr").appendChild(create('<th class="path-segment-label">' + label + "</th>"));
+          });
+          section.querySelector("tr").appendChild(create("<th class='path-segment-label'>I don't know</th>"));
+          section.querySelector("tbody").appendChild(create('<tr class="comment-row"><td>' +
+                    '<a href="#" class="comment-toggle">optional additional comments</a>' +
+                  '</td><td colspan="' + (pathLabels.length + 1) + '">' +
+                    '<textarea placeholder="you may provide additional feedback here" class="comments"></textarea>' +
+                  '</td></tr>'));
+
+          (function(){
+              var sectionLabel = trimmed;
+              var me = section
+              section.querySelector(".comment-toggle").onclick = function(e){
+                  console.log(me.querySelector(".comments"));
+                  me.querySelector(".comments").setAttribute("style", "display:block;");
+                  //me.querySelector(".comment-toggle").setAttribute("style", "display:none;");
+                  e.preventDefault();
+              }
+
+
+              var commentsBox = section.querySelector("textarea.comments");
+              var commentsKey = sectionLabel
+
+
+              function setValue(value){
+                  if(value){
+                      console.log("Existing comments:" + value)
+                      commentsBox.value = value;
+                      commentsBox.setAttribute("style", "display:block;");
+                  }
+              }
+
+              commentAreas[sectionLabel] = {
+                      setValue:setValue
+              };
+
+              function applyComments(){
+                  comments[commentsKey] = commentsBox.value;
+                  console.log(commentsKey, comments[commentsKey]);
+              }
+              commentsBox.onchange = applyComments;
+              commentsBox.onkeypress = applyComments;
+          })();
+
+          contentDiv.appendChild(section)
+          contentDiv.appendChild(create('<hr></hr>'));
+      }
+  });
+
+    var subject = parseQuery()["subject"]
+    var mode;
+
+    if(window.location.pathname === "/feedback-from-your-peers"){
+        mode = "peer";
+    }else if(window.location.pathname === "/feedback-for-report"){
+        mode = "report";
+    }else{
+        mode = "entry";
+    }
+
+
+    get("/api/me", function(me){
+        console.log("I am " + me)
+
+
+        var url;
+        var source;
+        if(mode === "peer" || mode ==="report"){
+            url = "/api/consolidated-feedback/" + subject;
+            source = "peers";
+        }else if(mode === "entry"){
+            url = "/api/feedback/" + me + "/" + subject;
+            source = me;
+        }
+
+        document.querySelector("#subject-content").innerHTML = "<span class='progress'></span>Feedback for " + subject + " from " + source + ' [ <a href="/logout">logout</a> ]';
+
+        get(url, function(responseText){
+            var feedback = JSON.parse(responseText)
+            each(Object.keys(feedback.items), function(name){
+                var meter = meters[name];
+                if(meter){
+                    meter.setValue(feedback.items[name]);
+                }
+            });
+
+            each(Object.keys(feedback.comments), function(name){
+                var commentArea = commentAreas[name];
+                if(commentArea){
+                    commentArea.setValue(feedback.comments[name]);
+                }
+            });
+        });
+    });
+
+    function round(value, decimals) {
+          return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+        }
+
+  var button = document.querySelector(".submit-button")
+
+  if(mode ==="report"){
+      button.innerText = "save this peer feedback as your feedback";
+  }
+  if(mode === "entry" || mode ==="report"){
+      function updateProgress(){
+          var completionPercent = (Object.keys(feedback).length / Object.keys(meters).length) * 100
+          console.log(completionPercent)
+          var progressSpan = document.querySelector(".progress")
+          if(progressSpan){
+              progressSpan.innerText = round(completionPercent, 0) + "% complete";
+          }
+          setTimeout(updateProgress, 500);
+      }
+
+      updateProgress();
+
+      button.onclick = function(){
+          console.log("Submitting")
+          var request = new XMLHttpRequest();
+          request.open("post", "/api/feedback   ", true);
+          request.setRequestHeader("Content-type", "application/json");
+          request.onload = function () {
+              console.log("DONE:" + request.responseText)
+              if(request.status === 201){
+                  window.location = "/";
+              }else{
+                  alert("Server returned " + request.status + ": " + request.responseText);
+              }
+          };
+          request.send(JSON.stringify({subject:subject, items:feedback, comments:comments}));
+      }
+  }else{
+      button.setAttribute("style", "display:none;");
+  }
+
+
+</script>
+</html>
